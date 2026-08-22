@@ -1,1 +1,127 @@
 @import "tailwindcss";
+
+@theme {
+  --color-ink: #16211d;
+  --color-pine: #0d1f1a;
+  --color-pine-2: #123028;
+  --color-pine-3: #1a4036;
+  --color-paper: #f0f1ec;
+  --color-card: #fbfbf7;
+  --color-brass: #c19a4b;
+  --color-brass-2: #a87f32;
+  --color-brass-3: #e5c98a;
+  --color-teal: #17705f;
+  --color-moss: #3e7d5c;
+  --color-rust: #b04a2f;
+  --color-clay: #8a5a44;
+  --color-fog: #64716b;
+
+  --font-display: "El Messiri", "IBM Plex Sans Arabic", serif;
+  --font-body: "IBM Plex Sans Arabic", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+
+  --shadow-lift: 0 14px 40px -18px rgba(13, 31, 26, 0.35);
+  --shadow-deep: 0 30px 70px -30px rgba(0, 0, 0, 0.55);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-brass);
+  color: var(--color-pine);
+}
+
+/* ---------- layered ambient patterns ---------- */
+.pattern-stars {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%23c19a4b' stroke-opacity='0.13'%3E%3Cpath d='M42 10l8.5 23.5L74 42l-23.5 8.5L42 74l-8.5-23.5L10 42l23.5-8.5z'/%3E%3Ccircle cx='42' cy='42' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.pattern-grid-light {
+  background-image:
+    linear-gradient(rgba(22, 33, 29, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 33, 29, 0.045) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.pattern-dots-dark {
+  background-image: radial-gradient(rgba(229, 201, 138, 0.14) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ---------- keyframes ---------- */
+@keyframes stampIn {
+  0% { opacity: 0; transform: rotate(-7deg) scale(1.7); }
+  55% { opacity: 1; transform: rotate(-7deg) scale(0.94); }
+  75% { transform: rotate(-7deg) scale(1.04); }
+  100% { opacity: 1; transform: rotate(-7deg) scale(1); }
+}
+.stamp-in { animation: stampIn 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+
+@keyframes marqueeRtl {
+  from { transform: translateX(0); }
+  to { transform: translateX(50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeRtl 38s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+@keyframes glowDrift {
+  0%, 100% { opacity: 0.45; transform: translate(0, 0) scale(1); }
+  50% { opacity: 0.85; transform: translate(-40px, 30px) scale(1.12); }
+}
+.glow-drift { animation: glowDrift 9s ease-in-out infinite; }
+
+@keyframes slowSpin {
+  to { transform: rotate(360deg); }
+}
+.slow-spin { animation: slowSpin 40s linear infinite; }
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.72); }
+}
+.pulse-dot { animation: pulseDot 2.2s ease-in-out infinite; }
+
+/* ---------- accordion (print-friendly) ---------- */
+.acc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.acc-body.open { grid-template-rows: 1fr; }
+.acc-body > div { overflow: hidden; }
+
+/* ---------- misc ---------- */
+.tabular { font-variant-numeric: tabular-nums; }
+
+.rail-top { position: relative; }
+.rail-top::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 52px;
+  height: 3px;
+  background: var(--color-brass);
+}
+
+@media print {
+  .no-print { display: none !important; }
+  .acc-body { grid-template-rows: 1fr !important; }
+  body { background: #fff; }
+  .print-break { break-before: page; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
